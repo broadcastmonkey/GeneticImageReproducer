@@ -10,11 +10,14 @@ namespace GeneticImageReproducerModel
     public class PictureReproducingGeneration
     {
         public List<PictureReproducerOrganism> Population;
-
-        public PictureReproducingGeneration(int count, int shapesCount, int width, int height, Random rand)
+        int PopulationCount = 0;
+        Random randGen;
+        public PictureReproducingGeneration(int populationCount, int shapesCount, int width, int height, Random rand)
         {
+            randGen = rand;
             Population = new List<PictureReproducerOrganism>();
-            for(int i=0;i<count;i++)
+            PopulationCount = populationCount;
+            for(int i=0;i<populationCount;i++)
             {
                 Population.Add(new PictureReproducerOrganism(shapesCount,width,height,rand));
             }
@@ -36,6 +39,27 @@ namespace GeneticImageReproducerModel
                 o.CalculateResult();
             }
         }
+        private PictureReproducerOrganism SelectRandom()
+        {
+            return Population[randGen.Next(0, Population.Count - 1)];
+        }
+        public void NaturalSelection(Int32 survivorsCount)
+        {
+            // only best-fit organism stay alive
+            Population.RemoveRange(100,Population.Count-100);
+
+            while(Population.Count<PopulationCount)
+            {
+                var parrent1 = SelectRandom();
+                var parrent2 = SelectRandom(); // naive random selection -> todo: should retrieve val based on fitness value
+
+                Population.Add(parrent1.CreateOffSpring(parrent2));
+            }
+            
+
+
+        }
+
 
 
     }

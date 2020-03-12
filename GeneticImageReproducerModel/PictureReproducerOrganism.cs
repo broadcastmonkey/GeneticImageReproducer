@@ -18,6 +18,7 @@ namespace GeneticImageReproducerModel
         Bitmap ResultBitmap;
         Int32 Width;
         Int32 Height;
+        Random randGen;
         public PictureReproducerOrganism(PictureReproducerOrganism parrent)
         {
             Shapes = new List<SingleShape>();
@@ -26,12 +27,13 @@ namespace GeneticImageReproducerModel
 
             ResultBitmap = new Bitmap(Width, Height);
             ResultBitmap.MakeTransparent(System.Drawing.Color.Transparent);
+            randGen = parrent.randGen;
 
         }
         public PictureReproducerOrganism(Int32 shapesCount, Int32 width, Int32 height, Random rand)
         {
             Shapes = new List<SingleShape>();
-            
+            randGen = rand;
 
             for(int i=0;i<shapesCount;i++)
             {
@@ -51,6 +53,7 @@ namespace GeneticImageReproducerModel
         }
         public void SetRandomParams(Random rand)
         {
+            
             foreach (var s in Shapes)
                 s.SetRandomParams(rand);
         }
@@ -98,12 +101,21 @@ namespace GeneticImageReproducerModel
             PictureReproducerOrganism child = new PictureReproducerOrganism(this);
 
             //todo: check for constraints etc
-            
-            for(int i=0;i<this.Shapes.Count/2;i++)
+
+            for (int i = 0; i < this.Shapes.Count / 2; i++)
             {
                 child.Shapes.Add(new SingleShape(this.Shapes[i]));
             }
+            for (int i = this.Shapes.Count / 2;i<this.Shapes.Count; i++)
+            {
+                child.Shapes.Add(new SingleShape(partner.Shapes[i]));
+            }
 
+
+            foreach(var s in Shapes)
+            {
+                s.Shape.Mutate(randGen,0.01);
+            }
             return child;
         }
     }

@@ -20,6 +20,7 @@ namespace GeneticImageReproducerModel.DnaParams.Shapes
         }
         public Shape(Shape shape)
         {
+            Color = new ShapeColor();
             Color.Color = System.Drawing.Color.FromArgb(shape.Color.Color.A, shape.Color.Color.R, shape.Color.Color.G, shape.Color.Color.B);
         }
         public virtual void Draw(Graphics g)

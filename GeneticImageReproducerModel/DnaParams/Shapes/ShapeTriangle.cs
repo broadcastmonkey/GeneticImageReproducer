@@ -36,7 +36,7 @@ namespace GeneticImageReproducerModel.DnaParams.Shapes
             (P2.X, P2.Y) = (100, -100);
             (P3.X, P3.Y) = (0, 100);
             RestorePointsPointers();
-
+          
         }
 
         //todo: should add some constraints via arguments 
@@ -46,11 +46,27 @@ namespace GeneticImageReproducerModel.DnaParams.Shapes
             (P2.X, P2.Y) = (rand.Next(0, 512), rand.Next(0, 512));
             (P3.X, P3.Y) = (rand.Next(0, 512), rand.Next(0, 512));
             RestorePointsPointers();
+            Color.SetRandomParams(rand);
         }
         override public void Draw(Graphics g)
         {
             SolidBrush sb = new SolidBrush(Color.Color);
             g.FillPolygon(sb, Points);
+        }
+       
+        public override void Mutate(Random rand,double probability)
+        {
+            double chances = rand.NextDouble();
+            if(chances<probability)
+            {
+                P1.X += rand.Next(-50, 50);
+                P1.Y += rand.Next(-50, 50);
+                P2.X += rand.Next(-50, 50);
+                P2.Y += rand.Next(-50, 50);
+                P3.X += rand.Next(-50, 50);
+                P3.Y += rand.Next(-50, 50);
+                RestorePointsPointers(); //todo: should not be doing it like that -> see why pointers are sometimes pointing to prev values
+            }
         }
     }
 }

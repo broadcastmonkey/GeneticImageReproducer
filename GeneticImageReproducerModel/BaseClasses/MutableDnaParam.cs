@@ -9,11 +9,8 @@ namespace GeneticImageReproducerModel.BaseClasses
     public class MutableDnaParam
     {
         public String Name = "";
-        public virtual void Mutate()
-        {
-
-        }
-        public virtual void Mutate(double probability)
+       
+        public virtual void Mutate(Random rand, double probability)
         {
 
         }

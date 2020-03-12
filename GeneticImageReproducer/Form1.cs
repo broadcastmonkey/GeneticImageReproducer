@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +17,8 @@ namespace GeneticImageReproducer
     {
         Bitmap SourceImage;
         PictureReproducingGeneration Generation;
+
+        Thread GeneticAlgorithm;
         public Form1()
         {
             InitializeComponent();
@@ -27,7 +30,7 @@ namespace GeneticImageReproducer
 
             Generation = new PictureReproducingGeneration(200, 100, 512, 512, new Random());
 
-           
+            GeneticAlgorithm = new Thread(new ThreadStart(PerformGeneticAlgorithm));
         }
 
         private void btnCreateTestImage_Click(object sender, EventArgs e)
@@ -41,18 +44,38 @@ namespace GeneticImageReproducer
          
         }
 
-        private void btnRunSimulation_Click(object sender, EventArgs e)
+        void PerformGeneticAlgorithm()
         {
-
-            DrawSourceImage();
+            
             BitmapResult expectedResult = new BitmapResult(SourceImage);
-
-            for(int i=1;i<1000;i++)
+            int generationsCount = 200;
+            for (int i = 1; i < generationsCount; i++)
             {
                 Generation.CalculateResults();
                 Generation.CalculateFitness(expectedResult);
-               
+                Generation.NaturalSelection(100);
+                
+
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    int perc = i * 100 / generationsCount;
+                    txtLog.Text = "GEN " + i + " (" + perc + "%)\r\n";
+                    foreach (var o in Generation.Population)
+                    {
+                        txtLog.Text += o.Fitness + "\r\n";
+                    }
+                    DrawCurrentBest(Generation.Population[0]);
+                    Generation.Population[0].GetResult().Save("c:/devel/gen/" + i.ToString("d5") + ".jpg");
+                }));
+
             }
+            GeneticAlgorithm.Abort();
+        }
+        private void btnRunSimulation_Click(object sender, EventArgs e)
+        {
+            DrawSourceImage();
+            GeneticAlgorithm.Start();
+            
 
         }
         void DrawCurrentBest(PictureReproducerOrganism organism)
@@ -60,6 +83,7 @@ namespace GeneticImageReproducer
             Graphics g = panelImage.CreateGraphics();
             g.FillRectangle(new SolidBrush(System.Drawing.Color.Black), 0, 0, panelImage.Width, panelImage.Height);
             g.DrawImage(organism.GetResult(), new Point(0, 0));
+            
 
         }
 
