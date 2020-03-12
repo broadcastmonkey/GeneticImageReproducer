@@ -9,6 +9,6 @@ namespace GeneticImageReproducerModel.BaseClasses
     public interface IGeneticAlgorithmOrganism
     {
         void CalculateFitness(ExpectedResult expectedResult);
-        IGeneticAlgorithmOrganism CreateOffSpring(IGeneticAlgorithmOrganism partner);
+      //  IGeneticAlgorithmOrganism CreateOffSpring(IGeneticAlgorithmOrganism partner);
     }
 }

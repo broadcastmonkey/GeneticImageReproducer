@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,14 +49,15 @@
     <Compile Include="BaseClasses\IGeneticAlgorithmOrganism.cs" />
     <Compile Include="BaseClasses\MutableDnaParam.cs" />
     <Compile Include="BaseClasses\Organism.cs" />
-    <Compile Include="DnaParams\Color.cs" />
-    <Compile Include="DnaParams\Shapes\Point.cs" />
+    <Compile Include="BitmapResult.cs" />
+    <Compile Include="DnaParams\ShapeColor.cs" />
     <Compile Include="DnaParams\Shapes\Shape.cs" />
     <Compile Include="DnaParams\Shapes\ShapeCircle.cs" />
-    <Compile Include="DnaParams\Shapes\ShapeRectnagle.cs" />
+    <Compile Include="DnaParams\Shapes\ShapeRectangle.cs" />
     <Compile Include="DnaParams\Shapes\ShapeTriangle.cs" />
-    <Compile Include="Generation.cs" />
-    <Compile Include="PictureReporoducerOrganism.cs" />
+    <Compile Include="PictureReproducingGeneration.cs" />
+    <Compile Include="SingleShape.cs" />
+    <Compile Include="PictureReproducerOrganism.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,20 +12,45 @@ namespace GeneticImageReproducerModel.DnaParams.Shapes
         public Point P1;
         public Point P2;
         public Point P3;
-        public ShapeTriangle()
+        public Point[] Points;
+
+        private void RestorePointsPointers()
         {
-            (P1.X, P1.Y) = (-1, -1);
-            (P2.X, P2.Y) = (1, -1);
-            (P3.X, P3.Y) = (0, 1);
+            Points = new Point[3];
+            Points[0] = P1;
+            Points[1] = P2;
+            Points[2] = P3;
         }
-        
-        //todo: should add some constraints via arguments 
-        new public void SetRandomParams(Random rand)
+        public ShapeTriangle(ShapeTriangle triangle):base(triangle)
         {
-            (P1.X, P1.Y) = (rand.Next(0, 512), rand.Next(0, 512));
+            Type = ShapeType.Triangle;
+            (P1.X, P1.Y) = (triangle.P1.X,triangle.P1.Y);
+            (P2.X, P2.Y) = (triangle.P3.X,triangle.P2.Y);
+            (P3.X, P3.Y) = (triangle.P3.X, triangle.P3.Y);
+            RestorePointsPointers();
+        }
+        public ShapeTriangle():base()
+        {
+            Type = ShapeType.Triangle;
+            (P1.X, P1.Y) = (-100, -100);
+            (P2.X, P2.Y) = (100, -100);
+            (P3.X, P3.Y) = (0, 100);
+            RestorePointsPointers();
+
+        }
+
+        //todo: should add some constraints via arguments 
+        override public void SetRandomParams(Random rand)
+        {
+             (P1.X, P1.Y) = (rand.Next(0, 512), rand.Next(0, 512));
             (P2.X, P2.Y) = (rand.Next(0, 512), rand.Next(0, 512));
             (P3.X, P3.Y) = (rand.Next(0, 512), rand.Next(0, 512));
+            RestorePointsPointers();
         }
-        
+        override public void Draw(Graphics g)
+        {
+            SolidBrush sb = new SolidBrush(Color.Color);
+            g.FillPolygon(sb, Points);
+        }
     }
 }

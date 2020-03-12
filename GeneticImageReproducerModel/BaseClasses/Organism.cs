@@ -8,20 +8,24 @@ namespace GeneticImageReproducerModel.BaseClasses
 {
     public class Organism : IGeneticAlgorithmOrganism
     {
-        private double Fitness;
+        public double Fitness;
         protected List<MutableDnaParam> Dna;
         public Organism ()
         {
             Dna = new List<MutableDnaParam>();
         }
-        public void CalculateFitness(ExpectedResult expectedResult)
+        public virtual void CalculateFitness(ExpectedResult expectedResult)
         {
             
 
         }
-        public IGeneticAlgorithmOrganism CreateOffSpring(IGeneticAlgorithmOrganism partner)
+        public virtual void CalculateResult()
+        {
+
+        }
+        /*public IGeneticAlgorithmOrganism CreateOffSpring(IGeneticAlgorithmOrganism partner)
         {
             return this;
-        }
+        }*/
     }
 }
